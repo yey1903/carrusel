@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrusel de Frases Mágicas para Justine</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Great+Vibes&display=swap');
+
+        /* Fondo romántico con cambio de color */
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #ffdde1, #ffb6c1, #ffcccc, #ffe4e1);
+            background-size: 400% 400%;
+            font-family: 'Dancing Script', cursive;
+            overflow: hidden;
+            position: relative;
+            animation: backgroundShift 10s ease infinite;
+        }
+
+        @keyframes backgroundShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Carrusel */
+        .carousel {
+            position: relative;
+            width: 90%;
+            max-width: 700px;
+            height: 260px;
+            text-align: center;
+            overflow: hidden;
+            background-color: rgba(255, 240, 245, 0.9);
+            padding: 40px;
+            border-radius: 25px;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2), 0 0 25px rgba(255, 182, 193, 1);
+            border: 5px solid rgba(255, 105, 180, 0.8);
+            animation: neonGlow 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes neonGlow {
+            from { box-shadow: 0 0 30px rgba(255, 182, 193, 0.8); }
+            to { box-shadow: 0 0 50px rgba(255, 105, 180, 1); }
+        }
+
+        .carousel-item {
+            opacity: 0;
+            transform: scale(1);
+            transition: opacity 0.3s linear, transform 0.3s linear;
+            font-size: 36px;
+            color: #ff69b4;
+            font-style: italic;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 0 15px;
+            box-sizing: border-box;
+            text-shadow: 0 0 15px rgba(255, 105, 180, 0.8);
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+        }
+
+        .carousel-item.active {
+            opacity: 1;
+            z-index: 1;
+        }
+
+        .carousel-item.inactive {
+            z-index: 0;
+        }
+
+        /* Botones adicionales */
+        .extra-buttons {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            gap: 15px;
+        }
+
+        .extra-button {
+            background-color: #ff69b4;
+            border: none;
+            padding: 10px 20px;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            border-radius: 50px;
+            box-shadow: 0 0 10px rgba(255, 105, 180, 0.8);
+            transition: all 0.3s ease;
+        }
+
+        .extra-button:hover {
+            transform: scale(1.1);
+        }
+
+        /* Poesía y Poema */
+        .poetry, .poem {
+            display: none;
+            position: absolute;
+            top: 10%;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(255, 240, 245, 0.9);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 0 15px rgba(255, 105, 180, 0.8);
+            text-align: center;
+            color: #ff69b4;
+            font-size: 24px;
+            max-width: 600px;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Corazones cayendo */
+        .heart {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: #ff69b4;
+            transform: rotate(-45deg);
+            animation: fall 5s infinite ease-in-out;
+        }
+
+        .heart::before, .heart::after {
+            content: "";
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: #ff69b4;
+            border-radius: 50%;
+        }
+
+        .heart::before {
+            top: -10px;
+            left: 0;
+        }
+
+        .heart::after {
+            left: 10px;
+            top: 0;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(0) rotate(-45deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(-45deg);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Carrusel -->
+    <div class="carousel" id="carousel">
+        <div class="carousel-item active">"Justine, tu sonrisa ilumina mi mundo más que el sol cada mañana."</div>
+        <div class="carousel-item">"Cada segundo contigo es una eternidad de felicidad, Justine."</div>
+        <div class="carousel-item">"No hay rincón en mi alma que no esté lleno de amor por ti, Justine."</div>
+        <div class="carousel-item">"Contigo, los sueños se hacen realidad, mi querida Justine."</div>
+    </div>
+
+    <!-- Botones extra -->
+    <div class="extra-buttons">
+        <button class="extra-button" id="revealPoetry">💖 Poesía para Justine</button>
+        <button class="extra-button" id="revealPoem">🌹 Poema Romántico</button>
+        <button class="extra-button" id="sendLove">💖 Enviar Amor</button>
+    </div>
+
+    <!-- Poesía Romántica para Justine -->
+    <div class="poetry" id="poetry">
+        "Tus ojos son el reflejo de un cielo en calma, Justine,<br>
+        en ellos se ocultan mis sueños más dulces,<br>
+        como el suave eco de un suspiro de amor eterno."<br><br>
+        - Para ti, Justine
+    </div>
+
+    <!-- Poema Romántico General -->
+    <div class="poem" id="poem">
+        "El amor es una melodía que suena en lo más profundo del alma,<br>
+        una canción que nunca deja de tocar,<br>
+        incluso cuando el viento se lleva las palabras."<br><br>
+        - Poema de Amor
+    </div>
+
+    <script>
+        // Carrusel automático optimizado
+        const items = document.querySelectorAll('.carousel-item');
+        let currentItem = 0;
+        let carouselInterval;
+
+        function updateCarousel() {
+            items.forEach(item => item.classList.remove('active', 'inactive'));
+            items[currentItem].classList.add('inactive');
+            currentItem = (currentItem + 1) % items.length;
+            items[currentItem].classList.add('active');
+        }
+
+        function startCarousel() {
+            updateCarousel();
+            carouselInterval = setInterval(updateCarousel, 3000);  // Cambio más rápido de 3 segundos
+        }
+
+        function stopCarousel() {
+            clearInterval(carouselInterval);
+        }
+
+        startCarousel();
+
+        // Mostrar poesía para Justine
+        document.getElementById('revealPoetry').addEventListener('click', () => {
+            document.getElementById('poetry').style.display = 'block';
+            stopCarousel();
+            setTimeout(() => {
+                document.getElementById('poetry').style.display = 'none';
+                startCarousel();
+            }, 7000);
+        });
+
+        // Mostrar poema romántico
+        document.getElementById('revealPoem').addEventListener('click', () => {
+            document.getElementById('poem').style.display = 'block';
+            stopCarousel();
+            setTimeout(() => {
+                document.getElementById('poem').style.display = 'none';
+                startCarousel();
+            }, 7000);
+        });
+
+        // Botón de enviar amor
+        document.getElementById('sendLove').addEventListener('click', () => {
+            alert('🌟 ¡Amor enviado a Justine con todo tu corazón! 💖');
+        });
+
+        // Corazones cayendo aleatoriamente
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            document.body.appendChild(heart);
+            heart.style.left = `${Math.random() * 100}vw`;
+            heart.style.animationDuration = `${Math.random() * 3 + 2}s`; // Caen entre 2 a 5 segundos
+            setTimeout(() => heart.remove(), 5000);
+        }
+
+        setInterval(createHeart, 500); // Crea un corazón cada 0.5 segundos
+    </script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
